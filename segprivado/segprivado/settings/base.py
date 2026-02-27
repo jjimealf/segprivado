@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "users",
+    "appointments",
+    "pharmacy",
     "registration",
     "nucleo",
     "django_cleanup",
