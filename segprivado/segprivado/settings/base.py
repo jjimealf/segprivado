@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
+    "users",
     "registration",
     "nucleo",
     "django_cleanup",
@@ -93,7 +94,7 @@ REST_FRAMEWORK = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / os.getenv("DJANGO_SQLITE_NAME", "db.sqlite3"),
+        "NAME": BASE_DIR / os.getenv("DJANGO_SQLITE_NAME", "dev.sqlite3"),
     }
 }
 
@@ -128,7 +129,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
-AUTH_USER_MODEL = "nucleo.Usuario"
+AUTH_USER_MODEL = "users.User"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "login"
 

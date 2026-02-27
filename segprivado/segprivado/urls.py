@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from registration.views import Login, LogoutView
+from users.views import Login, LogoutView
 
 
 urlpatterns = [
@@ -25,5 +25,6 @@ urlpatterns = [
     path('',include('nucleo.urls')),
     path('logout', LogoutView.as_view(), name='logout'),
     path('home', TemplateView.as_view(template_name='nucleo/home.html'), name='home'),
-    path('acounts/', include('registration.urls')),
+    path('accounts/', include('users.urls')),
+    path('acounts/', include('users.urls')),
 ]

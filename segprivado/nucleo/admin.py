@@ -1,10 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from .models import Cita, Medicamento, Usuario
-
-class UsuarioAdmin(admin.ModelAdmin):
-   fields = ['first_name', 'last_name', 'direccion', 'email', 'especialidad', 'username', 'password', 'is_medico', 'is_paciente', 'is_active', 'is_staff', 'is_superuser']
+from .models import Cita, Medicamento
 
 class MedicamentoAdminForm(forms.ModelForm):
    def clean_receta(self):
@@ -19,6 +16,5 @@ class MedicamentoAdmin(admin.ModelAdmin):
    search_fields = ['nombre']
          
 # Register your models here.
-admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(Medicamento, MedicamentoAdmin)
 admin.site.register(Cita)

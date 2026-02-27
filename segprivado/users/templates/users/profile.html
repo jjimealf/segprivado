@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Perfil</title>
+</head>
+<body>
+    <main>
+        <h1>Perfil</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar</button>
+        </form>
+        <p><a href="{% url 'nucleo:home' %}">Volver</a></p>
+    </main>
+</body>
+</html>
