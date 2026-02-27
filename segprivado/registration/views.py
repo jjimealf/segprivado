@@ -17,7 +17,7 @@ class SignupView(CreateView):
     form_class=UserCreationFormEmail
     template_name='registration/register.html'
 
-    def get_succes_url(self):
+    def get_success_url(self):
         return reverse_lazy('login')+'?register'
 
     def get_form(self, form_class=None):
