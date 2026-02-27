@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+<link rel="stylesheet" src="static.css">
+{% block titulo %} Citas {% endblock %}
+
+{%block content %}
+<h1>Citas</h1>
+ 
+<br>
+</br>
+
+<br>
+</br>
+{% if citas %}
+<table class="table">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">Fecha</th>
+      <th scope="col">Paciente</th>
+      <th scope="col">Observaciones</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody class="table-secondary">
+    {% for c in citas %}
+    <tr>
+      <td>{{ c.fecha }}</td>
+      <td>{{ c.idPaciente }}</td>
+      <td>{{ c.observaciones }}</td>
+      <td>
+        <a class="btn btn-secondary" href="{%url 'nucleo:actualizarCita' pk=c.id %}">Tratamiento</a>
+        
+      </td>
+    </tr>
+    {% endfor %}
+
+    {% else %}
+    <h1>No hay citas registradas</h1>
+
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock content%}

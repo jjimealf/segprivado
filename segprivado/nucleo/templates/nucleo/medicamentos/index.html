@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+<link rel="stylesheet" src="static.css">
+{% block titulo %} Medicamentos {% endblock %}
+
+{%block content %}
+<h1>Medicamentos</h1>
+ 
+<br>
+</br>
+<caption><a class="btn btn-secondary" href="{% url 'nucleo:crearMedicamento' %}">Añadir Medicamento</a></caption>
+<br>
+</br>
+{% if medicamentos %}
+<table class="table">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Descripcion</th>
+      <th scope="col">Receta</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Stock</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody class="table-secondary">
+    {% for m in medicamentos %}
+    <tr>
+      <td>{{ m.nombre }}</td>
+      <td>{{ m.descripcion }}</td>
+      <td>{{ m.receta }}</td>
+      <td>{{ m.precio }}</td>
+      <td>{{ m.stock }}</td>
+      <td>
+        <a class="btn btn-secondary" href="{%url 'nucleo:actualizarMedicamento' pk=m.id %}">Editar</a>
+        <a class="btn btn-danger" href="{%url 'nucleo:eliminarMedicamento' pk=m.id %}" onclick="return confirm('¿Está seguro que desea eliminar este medicamento?')">Eliminar</a>
+      </td>
+    </tr>
+    {% endfor %}
+
+    {% else %}
+    <h1>No hay medicamentos registrados</h1>
+
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock content%}

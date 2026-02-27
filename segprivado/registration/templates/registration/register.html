@@ -1,0 +1,17 @@
+{% extends 'indexR.html' %}
+{%block content%}
+<div class="container">
+    <br/ >
+    <div class="panel panel-default">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+    <p>
+    <input type="submit" class="btn btn-primary btn-block" value="Confirmar"/>
+    </form>
+    {% if 'register' in request.GET%}
+    <p style="color: green">Usuario registrado</p>
+    {%endif%}
+</div>
+</div>
+{% endblock content%}

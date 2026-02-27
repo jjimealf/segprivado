@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% block titulo %} Medicamento {% endblock %}
+
+{%block content %}
+<h1 class="text-secondary">Añadir Medicamento</h1>
+<style>
+    form {
+        width: 60%;
+        margin:auto;
+    }
+</style>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    
+    {{ form.as_p }}
+    
+    <button type="submit" class="btn btn-secondary">Guardar</button>
+</form>
+
+{%endblock content%}

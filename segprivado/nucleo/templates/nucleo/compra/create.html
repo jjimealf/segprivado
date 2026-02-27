@@ -1,0 +1,106 @@
+{% extends 'index.html' %}
+{% block titulo %} Citas {% endblock %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{%block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-8 d-flex justify-content-center">
+            <div class="card ">
+                <div class="card-header">
+                    <h3 class="card-title">Medicamentos</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-secondary">
+                            {% for m in medicamentos %}
+                            <tr>
+                                <td scope="col">{{ m.nombre }}</td>
+                                <td scope="col">{{ m.descripcion }}</td>
+                                <td scope="col">{{ m.precio }}</td>
+                                <td scope="col">{{ m.stock }}</td>
+                                <td scope="col">
+                                    <a class="btn btn-primary" href=#>Añadir</a></td>
+                            </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+            <div class="card ">
+                <div class="card-header">
+                    <h3 class="card-title">Datos Factura</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            {{ form.fecha }}
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>Paciente</label>
+                            <input type="text" name="paciente" value="{{ user.first_name }} {{ user.last_name }}" disabled>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>Total</label>
+                            {{form.precio}}
+                        </div>
+    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 d-flex justify-content-center">
+            <div class="card ">
+                <div class="card-header">
+                    <h3 class="card-title">Carrito</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-secondary">
+                            {% for c in carrito %}
+                            <tr>
+                                <td scope="col">{{ c.nombre }}</td>
+                                <td scope="col">{{ c.descripcion }}</td>
+                                <td scope="col">{{ c.precio }}</td>
+                                <td scope="col">0</td>
+                                <td scope="col">0.0</td>
+                                <td scope="col">
+                                    <a class="btn btn-primary" href=#>Añadir</a></td>
+                            </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

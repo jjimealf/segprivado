@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+{% block titulo %} Citas {% endblock %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{%block content %}
+<h1 class="text-secondary">Historico de Citas</h1>
+<br />
+<nav class="navbar">
+    <form class="container-fluid" action="{% url 'nucleo:filterCita'%}">
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">Filtros: </span>
+            <span class="input-group-text" id="basic-addon1">Fecha de Inicio: </span>
+            <input type="date" class="form-control" name="fechaIni">
+            <span class="input-group-text" id="basic-addon1">Fecha Final: </span>
+            <input type="date" class="form-control" name="fechaFin">
+            <button type="submit" class="btn btn-secondary">Buscar</button>
+        </div>
+    </form>
+</nav>
+<br />
+{% if citas %}
+<table class="table">
+    <thead class="table-primary">
+        <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Observaciones</th>
+            <th scope="col">Medico</th>
+    </thead>
+    <tbody class="table-secondary">
+        {% for cita in citas %}
+        <tr>
+            <td>{{ cita.fecha }}</td>
+            <td>{{ cita.observaciones }}</td>
+            <td>{{ cita.idMedico }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+{% else %}  
+    <h1>No hay citas registradas</h1>
+{% endif %}
+</table>
+{% endblock content %}
