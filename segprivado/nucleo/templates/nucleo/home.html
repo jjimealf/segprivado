@@ -1,74 +1,73 @@
 {% extends 'index.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Home | SegPrivado{% endblock %}
 
 {% block content %}
-{% if messages %}
-    <div class="alert alert-success">
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-    </div>
-{% endif %}
 {% if request.user.is_staff %}
-
 <div class="col d-flex justify-content-center">
-  <div class="card text-secondary"><a class="btn btn-secondary" href="">Medicos</a>
+  <div class="card text-secondary">
+    <a class="btn btn-secondary" href="">Medicos</a>
     <div class="card-block">
-      <br /><h5>Gestión de Usuarios</h5>
-    </div><br />
+      <br><h5>Gestion de Usuarios</h5>
+    </div><br>
   </div>
 </div>
-<br />
+<br>
 <div class="col d-flex justify-content-center">
-  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexMedicamento' %}">Medicamentos</a>
+  <div class="card text-secondary">
+    <a class="btn btn-secondary" href="{% url 'nucleo:indexMedicamento' %}">Medicamentos</a>
     <div class="card-block">
-      <br /><h5>Gestión de Medicamentos</h5>
-    </div><br />
+      <br><h5>Gestion de Medicamentos</h5>
+    </div><br>
   </div>
 </div>
 {% endif %}
+
 {% if request.user.is_paciente %}
 <div class="col d-flex justify-content-center">
-  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:pedirCita' %}">Citas</a>
+  <div class="card text-secondary">
+    <a class="btn btn-secondary" href="{% url 'nucleo:pedirCita' %}">Citas</a>
     <div class="card-block">
-      <br /><h5>Pedir Cita</h5>
-    </div><br />
+      <br><h5>Pedir Cita</h5>
+    </div><br>
   </div>
 </div>
-<br />
+<br>
 <div class="col d-flex justify-content-center">
-  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexCita' %}">Citas</a>
+  <div class="card text-secondary">
+    <a class="btn btn-secondary" href="{% url 'nucleo:indexCita' %}">Citas</a>
     <div class="card-block">
-      <br /><h5>Historial de Citas</h5>
-    </div><br />
+      <br><h5>Historial de Citas</h5>
+    </div><br>
   </div>
 </div>
-<br/>
+<br>
 <div class="col d-flex justify-content-center">
-  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:pedirCompra' %}">Farmacia</a>
+  <div class="card text-secondary">
+    <a class="btn btn-secondary" href="{% url 'nucleo:pedirCompra' %}">Farmacia</a>
     <div class="card-block">
-      <br /><h5>Compra de Medicamentos</h5>
-    </div><br />
+      <br><h5>Compra de Medicamentos</h5>
+    </div><br>
   </div>
 </div>
 {% endif %}
+
 {% if request.user.is_medico %}
 <div class="col d-flex justify-content-center">
-  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexMCita' %}">Citas</a>
+  <div class="card text-secondary">
+    <a class="btn btn-secondary" href="{% url 'nucleo:indexMCita' %}">Citas</a>
     <div class="card-block">
-      <br /><h5>Gestión de Citas</h5>
-    </div><br />
+      <br><h5>Gestion de Citas</h5>
+    </div><br>
   </div>
 </div>
 <div class="col d-flex justify-content-center">
-  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:historialMCita' %}">Citas</a>
+  <div class="card text-secondary">
+    <a class="btn btn-secondary" href="{% url 'nucleo:historialMCita' %}">Citas</a>
     <div class="card-block">
-      <br /><h5>Historico de Citas</h5>
-    </div><br />
+      <br><h5>Historico de Citas</h5>
+    </div><br>
   </div>
 </div>
 {% endif %}
-
-
 {% endblock %}

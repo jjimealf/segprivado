@@ -1,18 +1,33 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <title>Perfil</title>
-</head>
-<body>
-    <main>
-        <h1>Perfil</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Guardar</button>
-        </form>
-        <p><a href="{% url 'nucleo:home' %}">Volver</a></p>
-    </main>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Perfil | SegPrivado{% endblock %}
+
+{% block nav_brand %}
+<a class="navbar-brand" href="{% url 'nucleo:home' %}">SEGPRIVADO</a>
+{% endblock %}
+
+{% block nav_links %}
+<li class="nav-item mx-0 mx-lg-1">
+    <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'nucleo:home' %}">Volver</a>
+</li>
+<li class="nav-item mx-0 mx-lg-1">
+    <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'logout' %}">Salir</a>
+</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card text-dark shadow-lg">
+            <div class="card-body p-4">
+                <h1 class="h3 mb-4 text-secondary">Perfil</h1>
+                <form method="post" class="text-start">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-secondary w-100">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

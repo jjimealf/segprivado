@@ -1,18 +1,26 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <title>Registro</title>
-</head>
-<body>
-    <main>
-        <h1>Registro de paciente</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Registrar</button>
-        </form>
-        <p><a href="{% url 'login' %}">Volver al login</a></p>
-    </main>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Registro | SegPrivado{% endblock %}
+
+{% block nav_links %}
+<li class="nav-item mx-0 mx-lg-1">
+    <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'login' %}">Volver al login</a>
+</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card text-dark shadow-lg">
+            <div class="card-body p-4">
+                <h1 class="h3 mb-4 text-secondary">Registro de paciente</h1>
+                <form method="post" class="text-start">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-secondary w-100">Registrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

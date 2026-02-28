@@ -1,16 +1,15 @@
 {% extends 'index.html' %}
 
-{% block titulo %} Medicos {% endblock %}
+{% block title %}Medicos | SegPrivado{% endblock %}
 
-{%block content %}
+{% block content %}
 <h1 class="text-secondary">Medicos</h1>
 <nav class="navbar">
-  <form class="container-fluid" action="{% url 'nucleo:especialidad'%}">
+  <form class="container-fluid" action="{% url 'nucleo:especialidad' %}">
     <div class="input-group">
-      <span class="input-group-text">Filtro: </span>
-      <select class="form-select" aria-label="Default select example" name="especialidad">
+      <span class="input-group-text">Filtro:</span>
+      <select class="form-select" aria-label="Filtro de especialidad" name="especialidad">
         <option selected disabled>Especialidad</option>
-        <!-- <option value="0">Ver todos</option> -->
         <option value="SE">Sin Especialidad</option>
         <option value="DG">Digestivo</option>
         <option value="MF">Medico de Familia</option>
@@ -23,12 +22,9 @@
   </form>
 </nav>
 
-
 <br>
 
-
 {% if data %}
-
 <table class="table">
   <thead class="table-primary">
     <tr>
@@ -41,14 +37,11 @@
     <tr>
       <td>{{ e.first_name }}</td>
       <td>{{ e.last_name }}</td>
-
     </tr>
     {% endfor %}
-    {% else %}
-    <h1>No hay medicos con esa especialidad</h1>
-
-    {% endif %}
   </tbody>
 </table>
-
-{% endblock content%}
+{% else %}
+<h1>No hay medicos con esa especialidad</h1>
+{% endif %}
+{% endblock %}
