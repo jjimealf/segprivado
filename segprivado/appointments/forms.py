@@ -11,7 +11,13 @@ class AppointmentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["doctor"].queryset = User.objects.filter(is_medico=True)
         self.fields["doctor"].empty_label = "Seleccionar"
-        self.fields["fecha"].widget.attrs.update({"autocomplete": "off"})
+        self.fields["fecha"].widget.attrs.update(
+            {
+                "autocomplete": "off",
+                "placeholder": "AAAA-MM-DD",
+                "data-min-date": datetime.date(datetime.now()).isoformat(),
+            }
+        )
         self.fields["doctor"].widget.attrs.update({"autocomplete": "off"})
 
     class Meta:
@@ -19,7 +25,7 @@ class AppointmentForm(forms.ModelForm):
         fields = ["fecha", "doctor"]
         labels = {"fecha": "Fecha", "doctor": "Medico"}
         widgets = {
-            "fecha": forms.DateInput(attrs={"type": "date"}),
+            "fecha": forms.DateInput(format="%Y-%m-%d", attrs={"type": "text"}),
         }
 
     def clean_fecha(self):
