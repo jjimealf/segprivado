@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SegPrivado">
+    <title>{% block title %}SegPrivado{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --app-bg:#f3f7fb; --shell:#fff; --shell-soft:#f8fbfd; --line:#d7e2ec; --text:#193247; --muted:#64788d; --primary:#1d5f88; --primary-deep:#123b57; --primary-soft:#e6f0f7; --success:#2c7a59; --danger:#b44747; --shadow:0 24px 60px rgba(19,50,76,.08); }
+        * { box-sizing: border-box; }
+        body { margin:0; min-height:100vh; font-family:"IBM Plex Sans",sans-serif; color:var(--text); background:linear-gradient(180deg, rgba(230,240,247,.9) 0, rgba(243,247,251,0) 220px), linear-gradient(180deg, var(--app-bg), #eef4f9 100%); }
+        a { color:inherit; text-decoration:none; }
+        .app-shell { width:min(1240px, calc(100% - 24px)); margin:0 auto; padding:20px 0 28px; }
+        .app-topbar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:13px 14px; border:1px solid rgba(116,138,160,.16); border-radius:20px; background:rgba(255,255,255,.86); backdrop-filter:blur(14px); box-shadow:0 16px 36px rgba(17,44,67,.07); position:sticky; top:12px; z-index:20; }
+        .app-brand { display:inline-flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--primary-deep); }
+        .app-brand__mark { width:40px; height:40px; display:grid; place-items:center; border-radius:12px; color:#fff; background:linear-gradient(145deg, var(--primary), var(--primary-deep)); box-shadow:0 12px 22px rgba(18,59,87,.2); }
+        .app-nav, .button-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+        .app-link, .button { display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:0 13px; border-radius:12px; font-size:.88rem; font-weight:700; border:1px solid transparent; transition:all .18s ease; }
+        .app-link { border-radius:999px; color:var(--muted); }
+        .app-link:hover, .button:hover { transform:translateY(-1px); }
+        .app-link:hover { background:rgba(230,240,247,.72); border-color:rgba(29,95,136,.1); color:var(--primary-deep); }
+        .app-link--danger, .button--danger { color:#fff; background:linear-gradient(135deg, #b95e5e, var(--danger)); }
+        .user-chip { display:inline-flex; align-items:center; gap:10px; padding:5px 7px 5px 5px; border-radius:999px; background:var(--shell-soft); border:1px solid rgba(116,138,160,.16); }
+        .user-chip img { width:34px; height:34px; border-radius:50%; object-fit:cover; }
+        .user-chip__meta { display:grid; gap:2px; }
+        .user-chip__eyebrow { font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--muted); }
+        .user-chip__name { font-size:.92rem; font-weight:700; color:var(--primary-deep); }
+        .app-body { padding-top:18px; }
+        .app-message { padding:12px 14px; border-radius:14px; border:1px solid rgba(44,122,89,.14); background:rgba(228,247,236,.92); color:var(--success); font-weight:600; margin-bottom:14px; }
+        .page-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+        .page-title { margin:0; font-family:"Source Serif 4",serif; font-size:clamp(1.7rem,2.7vw,2.35rem); line-height:1.08; color:var(--primary-deep); }
+        .page-subtitle { margin:8px 0 0; max-width:62ch; color:var(--muted); line-height:1.65; }
+        .content-card { border-radius:22px; border:1px solid rgba(116,138,160,.14); background:var(--shell); box-shadow:var(--shadow); padding:clamp(18px,2vw,24px); }
+        .content-card + .content-card { margin-top:14px; }
+        .dashboard-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px; }
+        .dashboard-card { display:grid; gap:10px; padding:18px; border-radius:18px; border:1px solid rgba(116,138,160,.14); background:linear-gradient(180deg, #fff, #f7fbfe); }
+        .dashboard-card__eyebrow { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--muted); }
+        .dashboard-card__title { margin:0; font-size:1.06rem; font-weight:700; color:var(--primary-deep); }
+        .dashboard-card__copy { margin:0; color:var(--muted); line-height:1.6; }
+        .section-heading { margin-bottom:16px; }
+        .button--primary { color:#fff; background:linear-gradient(135deg, var(--primary), var(--primary-deep)); box-shadow:0 12px 20px rgba(18,59,87,.14); }
+        .button--secondary { color:var(--primary-deep); background:var(--primary-soft); border-color:rgba(29,95,136,.08); }
+        .form-errors, .field-errors { display:grid; gap:8px; }
+        .form-errors { margin-bottom:14px; }
+        .form-grid p { display:grid; gap:6px; margin:0 0 14px; }
+        .field-group { display:grid; gap:6px; margin:0 0 14px; }
+        .form-grid label { font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; font-weight:700; color:var(--muted); }
+        .form-grid input, .form-grid select, .form-grid textarea { width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 13px; font:inherit; color:var(--text); background:#fbfdff; outline:none; transition:all .16s ease; }
+        .form-grid input:focus, .form-grid select:focus, .form-grid textarea:focus { border-color:rgba(29,95,136,.34); box-shadow:0 0 0 4px rgba(29,95,136,.08); }
+        .field-help { font-size:.8rem; color:var(--muted); line-height:1.5; }
+        .field-error { padding:8px 12px; border-radius:12px; color:var(--danger); background:#fff0f0; font-size:.88rem; }
+        .table-wrap { overflow-x:auto; border:1px solid rgba(116,138,160,.14); border-radius:16px; background:#fff; }
+        table { width:100%; border-collapse:collapse; }
+        th, td { text-align:left; padding:12px 14px; border-bottom:1px solid rgba(116,138,160,.12); vertical-align:middle; }
+        th { font-size:.76rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); background:#f7fafc; }
+        tr:last-child td { border-bottom:none; }
+        .grid-two { display:grid; grid-template-columns:minmax(0, 1.2fr) minmax(280px, .8fr); gap:14px; }
+        .stack { display:grid; gap:14px; }
+        .empty-state { padding:22px; border-radius:16px; border:1px dashed rgba(116,138,160,.28); color:var(--muted); text-align:center; background:#fbfdff; }
+        .button-row--top { margin-top:14px; }
+        @media (max-width:980px) { .grid-two { grid-template-columns:1fr; } }
+        @media (max-width:860px) { .app-topbar { align-items:stretch; flex-direction:column; } .app-nav { width:100%; } }
+        @media (max-width:720px) { .app-shell { width:min(100%, calc(100% - 16px)); padding-top:14px; } .page-head { flex-direction:column; } .app-link, .button { flex:1 1 auto; } }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="app-shell">
+        <header class="app-topbar">
+            {% block nav_brand %}
+            <a class="app-brand" href="{% url 'nucleo:home' %}"><span class="app-brand__mark">SP</span><span>SegPrivado</span></a>
+            {% endblock %}
+            <nav class="app-nav" aria-label="Navegacion de aplicacion">{% block nav_links %}{% endblock %}</nav>
+        </header>
+        <main class="app-body">
+            {% if messages %}{% for message in messages %}<div class="app-message">{{ message }}</div>{% endfor %}{% endif %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

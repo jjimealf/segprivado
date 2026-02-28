@@ -10,6 +10,9 @@ class AppointmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["doctor"].queryset = User.objects.filter(is_medico=True)
+        self.fields["doctor"].empty_label = "Seleccionar"
+        self.fields["fecha"].widget.attrs.update({"autocomplete": "off"})
+        self.fields["doctor"].widget.attrs.update({"autocomplete": "off"})
 
     class Meta:
         model = Appointment
@@ -38,7 +41,12 @@ class AppointmentTreatmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = ["observaciones"]
-        labels = {"observaciones": "Observaciones"}
+        labels = {"observaciones": "Notas"}
         widgets = {
-            "observaciones": forms.Textarea(attrs={"class": "form-control"}),
+            "observaciones": forms.Textarea(
+                attrs={
+                    "rows": 5,
+                    "placeholder": "Notas",
+                }
+            ),
         }

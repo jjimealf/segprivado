@@ -1,47 +1,57 @@
-{% extends 'index.html' %}
+{% extends 'base.html' %}
 
-{% block title %}Medicos | SegPrivado{% endblock %}
+{% block title %}Directorio medico | SegPrivado{% endblock %}
 
 {% block content %}
-<h1 class="text-secondary">Medicos</h1>
-<nav class="navbar">
-  <form class="container-fluid" action="{% url 'nucleo:especialidad' %}">
-    <div class="input-group">
-      <span class="input-group-text">Filtro:</span>
-      <select class="form-select" aria-label="Filtro de especialidad" name="especialidad">
-        <option selected disabled>Especialidad</option>
-        <option value="SE">Sin Especialidad</option>
-        <option value="DG">Digestivo</option>
-        <option value="MF">Medico de Familia</option>
-        <option value="NE">Neurologo</option>
-        <option value="DT">Dermatologo</option>
-        <option value="TR">Traumatologo</option>
-      </select>
-      <button type="submit" class="btn btn-secondary">Buscar</button>
-    </div>
-  </form>
-</nav>
+<section class="stack public-wide">
+    <section>
+        <div class="public-panel">
+            <h1 class="section-title">Medicos</h1>
+            <div class="button-row button-row--top">
+                {% if request.user.is_authenticated %}
+                <a class="button-link button-link--ghost" href="{% url 'nucleo:home' %}">Panel</a>
+                {% else %}
+                <a class="button-link button-link--ghost" href="{% url 'login' %}">Acceso</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
 
-<br>
+    <section class="surface surface--padded">
+        <form method="get" class="form-stack">
+            <label class="form-label" for="especialidad">Especialidad</label>
+            <div class="button-row button-row--stretch">
+                <select id="especialidad" name="especialidad" class="field-input field-input--grow">
+                    <option value="">Todas</option>
+                    <option value="SE">Sin especialidad</option>
+                    <option value="DG">Digestivo</option>
+                    <option value="MF">Medico de Familia</option>
+                    <option value="NE">Neurologo</option>
+                    <option value="DT">Dermatologo</option>
+                    <option value="TR">Traumatologo</option>
+                </select>
+                <button type="submit" class="button-link button-link--primary">Filtrar</button>
+            </div>
+        </form>
+    </section>
 
-{% if data %}
-<table class="table">
-  <thead class="table-primary">
-    <tr>
-      <th scope="col">Nombre</th>
-      <th scope="col">Apellidos</th>
-    </tr>
-  </thead>
-  <tbody class="table-secondary">
-    {% for e in data %}
-    <tr>
-      <td>{{ e.first_name }}</td>
-      <td>{{ e.last_name }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% else %}
-<h1>No hay medicos con esa especialidad</h1>
-{% endif %}
+    {% if data %}
+    <section class="surface surface--padded">
+        <div class="dashboard-grid">
+            {% for e in data %}
+            <article class="dashboard-card">
+                <span class="dashboard-card__eyebrow">{{ e.get_especialidad_display }}</span>
+                <h3 class="dashboard-card__title">{{ e.first_name }} {{ e.last_name }}</h3>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% else %}
+    <section class="surface surface--padded">
+        <div class="feature-item feature-item--empty">
+            <strong>Sin resultados.</strong>
+        </div>
+    </section>
+    {% endif %}
+</section>
 {% endblock %}

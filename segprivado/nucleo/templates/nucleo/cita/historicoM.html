@@ -1,44 +1,55 @@
 {% extends 'index.html' %}
 
-{% block title %}Historico Medico | SegPrivado{% endblock %}
+{% block title %}Historico medico | SegPrivado{% endblock %}
 
 {% block content %}
-<h1 class="text-secondary">Historico de Citas</h1>
-<br>
-<nav class="navbar">
-    <form class="container-fluid" action="{% url 'nucleo:filterPaciente' %}">
-        <div class="input-group">
-            <span class="input-group-text">Paciente:</span>
-            <select class="form-select" aria-label="Filtro de paciente" name="paciente">
+<section class="page-head">
+    <div>
+        <h1 class="page-title">Pacientes</h1>
+    </div>
+</section>
+
+<section class="content-card">
+    <form class="form-grid" method="get" action="{% url 'nucleo:filterPaciente' %}">
+        <p>
+            <label for="paciente">Paciente</label>
+            <select id="paciente" name="paciente">
                 <option value="0">Todos</option>
                 {% for p in pacientes %}
                 <option value="{{ p.id }}">{{ p.first_name }} {{ p.last_name }}</option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-secondary">Buscar</button>
+        </p>
+        <div class="button-row">
+            <button type="submit" class="button button--primary">Filtrar</button>
         </div>
     </form>
-</nav>
+</section>
+
 {% if citas %}
-<table class="table">
-    <thead class="table-primary">
-        <tr>
-            <th scope="col">Fecha</th>
-            <th scope="col">Observaciones</th>
-            <th scope="col">Paciente</th>
-        </tr>
-    </thead>
-    <tbody class="table-secondary">
-        {% for cita in citas %}
-        <tr>
-            <td>{{ cita.fecha }}</td>
-            <td>{{ cita.observaciones }}</td>
-            <td>{{ cita.patient }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<section class="content-card">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Notas</th>
+                    <th>Paciente</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in citas %}
+                <tr>
+                    <td>{{ cita.fecha }}</td>
+                    <td>{{ cita.observaciones|default:"Sin observaciones" }}</td>
+                    <td>{{ cita.patient }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% else %}
-<h1>No hay citas registradas</h1>
+<section class="content-card"><div class="empty-state">Sin citas.</div></section>
 {% endif %}
 {% endblock %}

@@ -1,115 +1,127 @@
 {% extends 'index.html' %}
 
-{% block title %}Compra | SegPrivado{% endblock %}
+{% block title %}Farmacia | SegPrivado{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-8 d-flex justify-content-center">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Medicamentos</h3>
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead class="table-primary">
-                            <tr>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Descripcion</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">Stock</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-secondary">
-                            {% for m in medicamentos %}
-                            <tr>
-                                <td>{{ m.nombre }}</td>
-                                <td>{{ m.descripcion }}</td>
-                                <td>{{ m.precio }}</td>
-                                <td>{{ m.stock }}</td>
-                                <td>
-                                    <a class="btn btn-primary" href="{% url 'nucleo:addMedicamento' pk=m.id %}">Anadir</a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-4 d-flex justify-content-center">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Datos Factura</h3>
-                </div>
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label>Fecha</label>
-                            {{ form.fecha }}
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <label>Paciente</label>
-                            <input type="text" name="paciente" value="{{ user.first_name }} {{ user.last_name }}" disabled>
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <label>Total</label>
-                            {{ form.precio }}
-                        </div>
-                        <br>
-                        <button type="submit" class="btn btn-secondary">Guardar compra</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+<section class="page-head">
+    <div>
+        <h1 class="page-title">Farmacia</h1>
     </div>
-    <div class="row mt-4">
-        <div class="col-lg-8 d-flex justify-content-center">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Carrito</h3>
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead class="table-primary">
-                            <tr>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Descripcion</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">Cantidad</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-secondary">
-                            {% for c in carrito %}
-                            <tr>
-                                <td>{{ c.nombre }}</td>
-                                <td>{{ c.descripcion }}</td>
-                                <td>{{ c.precio }}</td>
-                                <td>{{ c.cantidad }}</td>
-                                <td>{{ c.acumulado }}</td>
-                                <td>
-                                    <a class="btn btn-primary" href="{% url 'nucleo:addMedicamento' pk=c.id %}">+</a>
-                                    <a class="btn btn-secondary" href="{% url 'nucleo:restarMedicamento' pk=c.id %}">-</a>
-                                    <a class="btn btn-danger" href="{% url 'nucleo:removeMedicamento' pk=c.id %}">Quitar</a>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="6">No hay medicamentos en el carrito.</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <a class="btn btn-outline-light text-dark border-secondary" href="{% url 'nucleo:limpiarCarrito' %}">Vaciar carrito</a>
-                </div>
+</section>
+
+<section class="grid-two">
+    <div class="stack">
+        <section class="content-card">
+            <h2 class="dashboard-card__title section-heading">Medicamentos</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Detalle</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Agregar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in medicamentos %}
+                        <tr>
+                            <td>{{ m.nombre }}</td>
+                            <td>{{ m.descripcion }}</td>
+                            <td>{{ m.precio }}</td>
+                            <td>{{ m.stock }}</td>
+                            <td><a class="button button--secondary" href="{% url 'nucleo:addMedicamento' pk=m.id %}">Agregar</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        </div>
+        </section>
+
+        <section class="content-card">
+            <h2 class="dashboard-card__title section-heading">Carrito</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                            <th>Ajustar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in carrito %}
+                        <tr>
+                            <td>{{ c.nombre }}</td>
+                            <td>{{ c.precio }}</td>
+                            <td>{{ c.cantidad }}</td>
+                            <td>{{ c.acumulado }}</td>
+                            <td>
+                                <div class="button-row">
+                                    <a class="button button--secondary" href="{% url 'nucleo:addMedicamento' pk=c.id %}">+</a>
+                                    <a class="button button--secondary" href="{% url 'nucleo:restarMedicamento' pk=c.id %}">-</a>
+                                    <a class="button button--danger" href="{% url 'nucleo:removeMedicamento' pk=c.id %}">Quitar</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">Carrito vacio.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="button-row button-row--top">
+                <a class="button button--secondary" href="{% url 'nucleo:limpiarCarrito' %}">Vaciar</a>
+            </div>
+        </section>
     </div>
-</div>
+
+    <section class="content-card">
+        <h2 class="dashboard-card__title section-heading">Compra</h2>
+        <form method="post" enctype="multipart/form-data" class="form-grid">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <div class="form-errors">
+                {% for error in form.non_field_errors %}
+                <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="field-group">
+                <label for="{{ form.fecha.id_for_label }}">{{ form.fecha.label }}</label>
+                {{ form.fecha }}
+                {% if form.fecha.errors %}
+                <div class="field-errors">
+                    {% for error in form.fecha.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="field-group">
+                <label>Paciente</label>
+                <input type="text" value="{{ user.first_name }} {{ user.last_name }}" disabled>
+            </div>
+            <div class="field-group">
+                <label for="{{ form.precio.id_for_label }}">{{ form.precio.label }}</label>
+                {{ form.precio }}
+                {% if form.precio.errors %}
+                <div class="field-errors">
+                    {% for error in form.precio.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="button-row">
+                <button type="submit" class="button button--primary">Guardar</button>
+            </div>
+        </form>
+    </section>
+</section>
 {% endblock %}

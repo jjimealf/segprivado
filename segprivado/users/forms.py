@@ -1,7 +1,20 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from users.models import User
+
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].label = "Usuario"
+        self.fields["password"].label = "Contrasena"
+        self.fields["username"].widget.attrs.update(
+            {"placeholder": "Usuario", "autocomplete": "username"}
+        )
+        self.fields["password"].widget.attrs.update(
+            {"placeholder": "Contrasena", "autocomplete": "current-password"}
+        )
 
 
 class SignupForm(UserCreationForm):
@@ -13,17 +26,25 @@ class SignupForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["username"].label = "Usuario"
+        self.fields["email"].label = "Correo"
+        self.fields["password1"].label = "Contrasena"
+        self.fields["password2"].label = "Repetir contrasena"
+        self.fields["username"].help_text = ""
+        self.fields["email"].help_text = ""
+        self.fields["password1"].help_text = ""
+        self.fields["password2"].help_text = ""
         self.fields["username"].widget.attrs.update(
-            {"class": "form-control", "placeholder": "Nombre de usuario"}
+            {"placeholder": "Usuario", "autocomplete": "username"}
         )
         self.fields["email"].widget.attrs.update(
-            {"class": "form-control", "placeholder": "Correo"}
+            {"placeholder": "Correo", "autocomplete": "email"}
         )
         self.fields["password1"].widget.attrs.update(
-            {"class": "form-control", "placeholder": "Contrasena"}
+            {"placeholder": "Contrasena", "autocomplete": "new-password"}
         )
         self.fields["password2"].widget.attrs.update(
-            {"class": "form-control", "placeholder": "Repite la contrasena"}
+            {"placeholder": "Repetir contrasena", "autocomplete": "new-password"}
         )
 
     def save(self, commit=True):
@@ -40,3 +61,18 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ["username", "first_name", "last_name", "email", "direccion"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        field_config = {
+            "username": ("Usuario", "Usuario"),
+            "first_name": ("Nombre", "Nombre"),
+            "last_name": ("Apellidos", "Apellidos"),
+            "email": ("Correo", "Correo"),
+            "direccion": ("Direccion", "Direccion"),
+        }
+        for name, (label, placeholder) in field_config.items():
+            field = self.fields[name]
+            field.label = label
+            field.widget.attrs.update({"placeholder": placeholder})
+        self.fields["email"].widget.attrs["autocomplete"] = "email"

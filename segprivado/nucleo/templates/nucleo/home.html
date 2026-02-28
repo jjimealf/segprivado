@@ -1,73 +1,58 @@
 {% extends 'index.html' %}
 
-{% block title %}Home | SegPrivado{% endblock %}
+{% block title %}Panel | SegPrivado{% endblock %}
 
 {% block content %}
-{% if request.user.is_staff %}
-<div class="col d-flex justify-content-center">
-  <div class="card text-secondary">
-    <a class="btn btn-secondary" href="">Medicos</a>
-    <div class="card-block">
-      <br><h5>Gestion de Usuarios</h5>
-    </div><br>
-  </div>
-</div>
-<br>
-<div class="col d-flex justify-content-center">
-  <div class="card text-secondary">
-    <a class="btn btn-secondary" href="{% url 'nucleo:indexMedicamento' %}">Medicamentos</a>
-    <div class="card-block">
-      <br><h5>Gestion de Medicamentos</h5>
-    </div><br>
-  </div>
-</div>
-{% endif %}
+<section class="page-head">
+    <div>
+        <h1 class="page-title">Panel</h1>
+    </div>
+</section>
 
-{% if request.user.is_paciente %}
-<div class="col d-flex justify-content-center">
-  <div class="card text-secondary">
-    <a class="btn btn-secondary" href="{% url 'nucleo:pedirCita' %}">Citas</a>
-    <div class="card-block">
-      <br><h5>Pedir Cita</h5>
-    </div><br>
-  </div>
-</div>
-<br>
-<div class="col d-flex justify-content-center">
-  <div class="card text-secondary">
-    <a class="btn btn-secondary" href="{% url 'nucleo:indexCita' %}">Citas</a>
-    <div class="card-block">
-      <br><h5>Historial de Citas</h5>
-    </div><br>
-  </div>
-</div>
-<br>
-<div class="col d-flex justify-content-center">
-  <div class="card text-secondary">
-    <a class="btn btn-secondary" href="{% url 'nucleo:pedirCompra' %}">Farmacia</a>
-    <div class="card-block">
-      <br><h5>Compra de Medicamentos</h5>
-    </div><br>
-  </div>
-</div>
-{% endif %}
+<section class="dashboard-grid">
+    {% if request.user.is_staff %}
+    <article class="dashboard-card">
+        <span class="dashboard-card__eyebrow">Administracion</span>
+        <h2 class="dashboard-card__title">Medicamentos</h2>
+        <div class="button-row"><a class="button button--primary" href="{% url 'nucleo:indexMedicamento' %}">Abrir</a></div>
+    </article>
+    {% endif %}
 
-{% if request.user.is_medico %}
-<div class="col d-flex justify-content-center">
-  <div class="card text-secondary">
-    <a class="btn btn-secondary" href="{% url 'nucleo:indexMCita' %}">Citas</a>
-    <div class="card-block">
-      <br><h5>Gestion de Citas</h5>
-    </div><br>
-  </div>
-</div>
-<div class="col d-flex justify-content-center">
-  <div class="card text-secondary">
-    <a class="btn btn-secondary" href="{% url 'nucleo:historialMCita' %}">Citas</a>
-    <div class="card-block">
-      <br><h5>Historico de Citas</h5>
-    </div><br>
-  </div>
-</div>
-{% endif %}
+    {% if request.user.is_paciente %}
+    <article class="dashboard-card">
+        <span class="dashboard-card__eyebrow">Paciente</span>
+        <h2 class="dashboard-card__title">Citas</h2>
+        <div class="button-row"><a class="button button--primary" href="{% url 'nucleo:pedirCita' %}">Nueva</a></div>
+    </article>
+    <article class="dashboard-card">
+        <span class="dashboard-card__eyebrow">Paciente</span>
+        <h2 class="dashboard-card__title">Historial</h2>
+        <div class="button-row"><a class="button button--secondary" href="{% url 'nucleo:indexCita' %}">Ver</a></div>
+    </article>
+    <article class="dashboard-card">
+        <span class="dashboard-card__eyebrow">Paciente</span>
+        <h2 class="dashboard-card__title">Farmacia</h2>
+        <div class="button-row"><a class="button button--secondary" href="{% url 'nucleo:pedirCompra' %}">Abrir</a></div>
+    </article>
+    {% endif %}
+
+    {% if request.user.is_medico %}
+    <article class="dashboard-card">
+        <span class="dashboard-card__eyebrow">Medico</span>
+        <h2 class="dashboard-card__title">Agenda</h2>
+        <div class="button-row"><a class="button button--primary" href="{% url 'nucleo:indexMCita' %}">Abrir</a></div>
+    </article>
+    <article class="dashboard-card">
+        <span class="dashboard-card__eyebrow">Medico</span>
+        <h2 class="dashboard-card__title">Pacientes</h2>
+        <div class="button-row"><a class="button button--secondary" href="{% url 'nucleo:historialMCita' %}">Ver</a></div>
+    </article>
+    {% endif %}
+
+    <article class="dashboard-card">
+        <span class="dashboard-card__eyebrow">Publico</span>
+        <h2 class="dashboard-card__title">Medicos</h2>
+        <div class="button-row"><a class="button button--secondary" href="{% url 'nucleo:especialidad' %}">Ver</a></div>
+    </article>
+</section>
 {% endblock %}

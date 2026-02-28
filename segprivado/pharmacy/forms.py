@@ -11,17 +11,17 @@ class MedicineForm(forms.ModelForm):
         fields = ["nombre", "descripcion", "receta", "precio", "stock"]
         labels = {
             "nombre": "Nombre",
-            "descripcion": "Descripcion",
+            "descripcion": "Detalle",
             "receta": "Receta",
             "precio": "Precio",
             "stock": "Stock",
         }
         widgets = {
-            "nombre": forms.TextInput(attrs={"class": "form-control"}),
-            "descripcion": forms.Textarea(attrs={"class": "form-control"}),
-            "receta": forms.TextInput(attrs={"class": "form-control"}),
-            "precio": forms.NumberInput(attrs={"class": "form-control"}),
-            "stock": forms.NumberInput(attrs={"class": "form-control"}),
+            "nombre": forms.TextInput(attrs={"placeholder": "Nombre"}),
+            "descripcion": forms.Textarea(attrs={"rows": 4, "placeholder": "Detalle"}),
+            "receta": forms.TextInput(attrs={"placeholder": "Receta"}),
+            "precio": forms.NumberInput(attrs={"placeholder": "Precio", "step": "0.01"}),
+            "stock": forms.NumberInput(attrs={"placeholder": "Stock"}),
         }
 
 
@@ -33,6 +33,7 @@ class PurchaseForm(forms.ModelForm):
         widgets = {
             "fecha": forms.DateInput(
                 attrs={
+                    "type": "date",
                     "disabled": True,
                     "value": datetime.date(datetime.now()),
                 }
@@ -41,6 +42,7 @@ class PurchaseForm(forms.ModelForm):
                 attrs={
                     "disabled": True,
                     "value": 0.0,
+                    "step": "0.01",
                 }
             ),
         }

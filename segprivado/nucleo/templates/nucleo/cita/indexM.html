@@ -1,34 +1,39 @@
 {% extends 'index.html' %}
 
-{% block title %}Citas | SegPrivado{% endblock %}
+{% block title %}Agenda medica | SegPrivado{% endblock %}
 
 {% block content %}
-<h1>Citas</h1>
-<br>
+<section class="page-head">
+    <div>
+        <h1 class="page-title">Agenda</h1>
+    </div>
+</section>
 {% if citas %}
-<table class="table">
-  <thead class="table-primary">
-    <tr>
-      <th scope="col">Fecha</th>
-      <th scope="col">Paciente</th>
-      <th scope="col">Observaciones</th>
-      <th scope="col">Acciones</th>
-    </tr>
-  </thead>
-  <tbody class="table-secondary">
-    {% for c in citas %}
-    <tr>
-      <td>{{ c.fecha }}</td>
-      <td>{{ c.patient }}</td>
-      <td>{{ c.observaciones }}</td>
-      <td>
-        <a class="btn btn-secondary" href="{% url 'nucleo:actualizarCita' pk=c.id %}">Tratamiento</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<section class="content-card">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Paciente</th>
+                    <th>Notas</th>
+                    <th>Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in citas %}
+                <tr>
+                    <td>{{ c.fecha }}</td>
+                    <td>{{ c.patient }}</td>
+                    <td>{{ c.observaciones|default:"Sin observaciones" }}</td>
+                    <td><a class="button button--secondary" href="{% url 'nucleo:actualizarCita' pk=c.id %}">Editar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% else %}
-<h1>No hay citas registradas</h1>
+<section class="content-card"><div class="empty-state">Sin citas.</div></section>
 {% endif %}
 {% endblock %}

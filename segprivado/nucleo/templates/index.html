@@ -1,25 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'private_base.html' %}
 {% load static %}
 
-{% block title %}Panel | SegPrivado{% endblock %}
-
-{% block nav_brand %}
-<a class="navbar-brand" href="{% url 'nucleo:home' %}">SEGPRIVADO</a>
-{% endblock %}
-
 {% block nav_links %}
-<li class="nav-item mx-0 mx-lg-1 d-flex align-items-center me-3">
-    <img src="{% static 'users/ADMIN.jpg' %}" alt="usuario" width="45" height="45" class="rounded-circle">
-</li>
-<li class="nav-item mx-0 mx-lg-1">
-    <span class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</span>
-</li>
-<li class="nav-item mx-0 mx-lg-1">
-    <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'viewProfile' %}">Perfil</a>
-</li>
-<li class="nav-item mx-0 mx-lg-1">
-    <a class="nav-link py-3 px-0 px-lg-3 rounded" onclick="return confirm('Desea cerrar sesion?')" href="{% url 'logout' %}">Salir</a>
-</li>
+{% if request.user.is_staff %}
+<a class="app-link" href="{% url 'nucleo:indexMedicamento' %}">Medicamentos</a>
+{% endif %}
+{% if request.user.is_paciente %}
+<a class="app-link" href="{% url 'nucleo:pedirCita' %}">Cita</a>
+<a class="app-link" href="{% url 'nucleo:indexCita' %}">Historial</a>
+<a class="app-link" href="{% url 'nucleo:pedirCompra' %}">Farmacia</a>
+{% endif %}
+{% if request.user.is_medico %}
+<a class="app-link" href="{% url 'nucleo:indexMCita' %}">Agenda</a>
+<a class="app-link" href="{% url 'nucleo:historialMCita' %}">Historial</a>
+{% endif %}
+<a class="app-link" href="{% url 'nucleo:especialidad' %}">Medicos</a>
+<span class="user-chip">
+    <img src="{% static 'users/ADMIN.jpg' %}" alt="usuario">
+        <span class="user-chip__meta">
+            <span class="user-chip__eyebrow">
+            {% if request.user.is_staff %}Admin{% elif request.user.is_medico %}Medico{% else %}Paciente{% endif %}
+            </span>
+            <span class="user-chip__name">{{ user.username }}</span>
+        </span>
+</span>
+<a class="app-link" href="{% url 'viewProfile' %}">Perfil</a>
+<a class="app-link app-link--danger" href="{% url 'logout' %}" onclick="return confirm('Desea cerrar sesion?')">Salir</a>
 {% endblock %}
 
 {% block content %}{% endblock %}

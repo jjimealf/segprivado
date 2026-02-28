@@ -7,11 +7,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.views.generic import CreateView, UpdateView
 
-from users.forms import SignupForm, UserProfileForm
+from users.forms import LoginForm, SignupForm, UserProfileForm
 
 
 class Login(LoginView):
     template_name = "users/login.html"
+    authentication_form = LoginForm
 
 
 class LogoutView(DjangoLogoutView):
