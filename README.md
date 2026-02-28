@@ -44,7 +44,8 @@ Ejemplo:
 ```bash
 python -m venv .venv
 .venv\Scripts\activate
-pip install django django-cors-headers djangorestframework django-cleanup pillow
+pip install -r requirements.txt
+python manage.py check
 python manage.py migrate
 python manage.py runserver
 ```
@@ -129,13 +130,12 @@ Tambien crea medicamentos de ejemplo si no existen.
 Comandos utiles:
 
 ```bash
+python manage.py check
 python manage.py migrate
 python manage.py runserver
 python manage.py test
 python manage.py seed_demo
 ```
-
-Nota: si falta `corsheaders`, `manage.py` no arrancara. Asegurate de instalar `django-cors-headers` antes de ejecutar comandos de Django.
 
 ## Estructura rapida
 
@@ -152,3 +152,8 @@ manage.py       Entrada principal de Django
 ## Estado actual
 
 Es un proyecto funcional orientado a desarrollo local. El README documenta el estado actual del codigo y los flujos existentes, sin cubrir despliegue en produccion.
+
+El arranque local fue verificado con:
+
+- `pip install -r requirements.txt`
+- `python manage.py check`
