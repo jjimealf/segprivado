@@ -1,0 +1,156 @@
+{% extends 'index.html' %}
+
+{% block title %}Historial de compras | SegPrivado{% endblock %}
+
+{% block extra_head %}
+<style>
+    .purchase-history {
+        display: grid;
+        gap: 14px;
+    }
+
+    .purchase-card {
+        display: grid;
+        gap: 16px;
+        padding: 18px;
+        border-radius: 20px;
+        border: 1px solid rgba(116, 138, 160, 0.14);
+        background:
+            radial-gradient(circle at top right, rgba(29, 95, 136, 0.08), transparent 28%),
+            linear-gradient(180deg, #ffffff, #f8fbfd);
+    }
+
+    .purchase-card__head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .purchase-card__title {
+        margin: 0;
+        font-size: 1.02rem;
+        font-weight: 700;
+        color: var(--primary-deep);
+    }
+
+    .purchase-card__copy {
+        margin: 5px 0 0;
+        color: var(--muted);
+        line-height: 1.55;
+    }
+
+    .purchase-card__badges {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .purchase-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 12px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--primary-deep);
+        background: rgba(230, 240, 247, 0.78);
+    }
+
+    .purchase-badge--total {
+        color: #ffffff;
+        background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+    }
+
+    .purchase-lines {
+        display: grid;
+        gap: 10px;
+    }
+
+    .purchase-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 13px;
+        border-radius: 15px;
+        border: 1px solid rgba(116, 138, 160, 0.12);
+        background: rgba(255, 255, 255, 0.84);
+    }
+
+    .purchase-line__name {
+        font-weight: 700;
+        color: var(--primary-deep);
+    }
+
+    .purchase-line__meta {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.9rem;
+    }
+
+    .purchase-line__qty {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        min-height: 38px;
+        padding: 0 10px;
+        border-radius: 12px;
+        font-weight: 700;
+        color: var(--primary-deep);
+        background: #f4f8fb;
+        border: 1px solid rgba(116, 138, 160, 0.14);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+    <div>
+        <h1 class="page-title">Historial de compras</h1>
+        <p class="page-subtitle">Consulta tus compras anteriores y revisa el detalle de cada medicamento registrado en el pedido.</p>
+    </div>
+    <div class="button-row">
+        <a class="button button--secondary" href="{% url 'nucleo:pedirCompra' %}">Volver a farmacia</a>
+    </div>
+</section>
+
+{% if purchases %}
+<section class="purchase-history">
+    {% for purchase in purchases %}
+    <article class="content-card purchase-card">
+        <div class="purchase-card__head">
+            <div>
+                <h2 class="purchase-card__title">Compra #{{ purchase.id }}</h2>
+                <p class="purchase-card__copy">Registrada el {{ purchase.fecha }} con {{ purchase.purchaseitem_set.all|length }} linea{{ purchase.purchaseitem_set.all|length|pluralize }}.</p>
+            </div>
+            <div class="purchase-card__badges">
+                <span class="purchase-badge">{{ purchase.fecha }}</span>
+                <span class="purchase-badge purchase-badge--total">Total {{ purchase.precio }}</span>
+            </div>
+        </div>
+
+        <div class="purchase-lines">
+            {% for item in purchase.purchaseitem_set.all %}
+            <div class="purchase-line">
+                <div>
+                    <div class="purchase-line__name">{{ item.medicine.nombre }}</div>
+                    <div class="purchase-line__meta">{{ item.medicine.descripcion|default:"Sin detalle disponible." }}</div>
+                </div>
+                <span class="purchase-line__qty">{{ item.cant }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </article>
+    {% endfor %}
+</section>
+{% else %}
+<section class="content-card">
+    <div class="empty-state">Aun no tienes compras registradas.</div>
+</section>
+{% endif %}
+{% endblock %}

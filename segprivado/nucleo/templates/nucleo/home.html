@@ -32,7 +32,10 @@
     <article class="dashboard-card">
         <span class="dashboard-card__eyebrow">Paciente</span>
         <h2 class="dashboard-card__title">Farmacia</h2>
-        <div class="button-row"><a class="button button--secondary" href="{% url 'nucleo:pedirCompra' %}">Abrir</a></div>
+        <div class="button-row">
+            <a class="button button--secondary" href="{% url 'nucleo:pedirCompra' %}">Abrir</a>
+            <a class="button button--primary" href="{% url 'nucleo:historialCompra' %}">Historial</a>
+        </div>
     </article>
     {% endif %}
 

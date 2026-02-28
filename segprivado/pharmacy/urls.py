@@ -9,6 +9,7 @@ urlpatterns = [
     path("medicamento/update/<int:pk>/", views.MedicineUpdateView.as_view(), name="actualizarMedicamento"),
     path("medicamento/delete/<int:pk>/", views.medicine_delete, name="eliminarMedicamento"),
     path("compra/", views.PurchaseCreateView.as_view(), name="pedirCompra"),
+    path("compra/history/", views.purchase_history, name="historialCompra"),
     path("compra/add/<int:pk>/", views.add_medicine, name="addMedicamento"),
     path("compra/remove/<int:pk>/", views.remove_medicine, name="removeMedicamento"),
     path("compra/subtract/<int:pk>/", views.decrement_medicine, name="restarMedicamento"),

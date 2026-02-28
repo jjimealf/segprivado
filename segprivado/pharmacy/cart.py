@@ -11,7 +11,11 @@ class Cart:
 
     def add(self, medicine):
         medicine_id = str(medicine.id)
+        available_stock = max(0, medicine.stock or 0)
+
         if medicine_id not in self.cart:
+            if available_stock < 1:
+                return False
             self.cart[medicine_id] = {
                 "id": medicine.id,
                 "nombre": medicine.nombre,
@@ -22,9 +26,12 @@ class Cart:
             }
         else:
             item = self.cart[medicine_id]
+            if item["cantidad"] >= available_stock:
+                return False
             item["cantidad"] += 1
-            item["acumulado"] += medicine.precio
+            item["acumulado"] = round(item["acumulado"] + medicine.precio, 2)
         self.save()
+        return True
 
     def save(self):
         self.session["carrito"] = self.cart
@@ -41,7 +48,7 @@ class Cart:
         if medicine_id in self.cart:
             item = self.cart[medicine_id]
             item["cantidad"] -= 1
-            item["acumulado"] -= medicine.precio
+            item["acumulado"] = round(item["acumulado"] - medicine.precio, 2)
             if item["cantidad"] < 1:
                 self.remove(medicine)
             else:
@@ -50,3 +57,12 @@ class Cart:
     def clear(self):
         self.session["carrito"] = {}
         self.session.modified = True
+
+    def items(self):
+        return list(self.cart.values())
+
+    def total_quantity(self):
+        return sum(int(item["cantidad"]) for item in self.cart.values())
+
+    def total_price(self):
+        return round(sum(float(item["acumulado"]) for item in self.cart.values()), 2)
