@@ -44,7 +44,7 @@ class AppointmentCreateView(CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = None
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, patient=request.user)
         if form.is_valid():
             appointment = form.save(commit=False)
             appointment.patient = self.request.user
@@ -159,6 +159,11 @@ class AppointmentHistoryApiView(APIView):
             doctor = User.objects.get(pk=doctor_id, is_medico=True)
         except User.DoesNotExist:
             return Response({"detail": "Medico no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        if Appointment.objects.filter(patient=request.user, fecha=fecha).exists():
+            return Response(
+                {"detail": "Ya tienes una cita registrada para esa fecha"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         appointment = Appointment.objects.create(
             doctor=doctor,
             patient=request.user,

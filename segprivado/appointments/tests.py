@@ -36,3 +36,37 @@ class AppointmentFlowTests(TestCase):
         appointment = Appointment.objects.get()
         self.assertEqual(appointment.patient, patient)
         self.assertEqual(appointment.doctor, doctor)
+
+    def test_patient_cannot_create_duplicate_appointment_on_same_date(self):
+        user_model = get_user_model()
+        patient = user_model.objects.create_user(
+            username="paciente_cita_dup",
+            password="ClaveSegura123",
+            is_paciente=True,
+            is_medico=False,
+        )
+        doctor = user_model.objects.create_user(
+            username="doctor_cita_dup",
+            password="ClaveSegura123",
+            is_paciente=False,
+            is_medico=True,
+        )
+        appointment_date = date.today() + timedelta(days=1)
+        Appointment.objects.create(
+            fecha=appointment_date,
+            doctor=doctor,
+            patient=patient,
+        )
+
+        self.client.force_login(patient)
+        response = self.client.post(
+            reverse("nucleo:pedirCita"),
+            {
+                "fecha": appointment_date.isoformat(),
+                "doctor": doctor.pk,
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Ya tienes una cita registrada para esa fecha")
+        self.assertEqual(Appointment.objects.count(), 1)

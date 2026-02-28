@@ -8,9 +8,11 @@ from users.models import User
 
 class AppointmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        self.patient = kwargs.pop("patient", None)
         super().__init__(*args, **kwargs)
         self.fields["doctor"].queryset = User.objects.filter(is_medico=True)
         self.fields["doctor"].empty_label = "Seleccionar"
+        self.fields["fecha"].input_formats = ["%Y-%m-%d", "%d/%m/%Y", "%d/%m/%y"]
         self.fields["fecha"].widget.attrs.update(
             {
                 "autocomplete": "off",
@@ -38,6 +40,8 @@ class AppointmentForm(forms.ModelForm):
         cleaned_data = super().clean()
         fecha = cleaned_data.get("fecha")
         doctor = cleaned_data.get("doctor")
+        if fecha and self.patient and Appointment.objects.filter(fecha=fecha, patient=self.patient).exists():
+            raise forms.ValidationError("Ya tienes una cita registrada para esa fecha")
         if fecha and doctor and Appointment.objects.filter(fecha=fecha, doctor=doctor).count() > 3:
             raise forms.ValidationError("Ese medico no esta disponible en esa fecha")
         return cleaned_data
