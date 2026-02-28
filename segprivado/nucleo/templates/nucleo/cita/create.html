@@ -157,7 +157,7 @@
                 <h2 class="appointment-date-card__title">Elige el dia de tu cita</h2>
                 <p class="appointment-date-card__copy">Selecciona una fecha disponible para continuar con la reserva. Luego podras escoger el medico.</p>
             </div>
-            <div class="field-group appointment-date-field">
+            <div class="field-group appointment-date-field" data-sp-date-picker-host>
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
                 <div class="appointment-date-preview" id="appointment-date-preview" data-empty="{% if field.value %}false{% else %}true{% endif %}">
@@ -209,8 +209,8 @@
         const preview = document.getElementById("appointment-date-preview");
         const previewText = document.getElementById("appointment-date-text");
 
-        if (window.SegPrivadoDatePicker && dateInput) {
-            window.SegPrivadoDatePicker.attach(dateInput);
+        if (window.SegPrivadoDatePicker) {
+            window.SegPrivadoDatePicker.attachAll();
         }
 
         if (!dateInput || !preview || !previewText) {

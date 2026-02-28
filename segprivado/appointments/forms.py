@@ -18,6 +18,7 @@ class AppointmentForm(forms.ModelForm):
                 "autocomplete": "off",
                 "placeholder": "AAAA-MM-DD",
                 "data-min-date": datetime.date(datetime.now()).isoformat(),
+                "data-sp-date-picker": "true",
             }
         )
         self.fields["doctor"].widget.attrs.update({"autocomplete": "off"})

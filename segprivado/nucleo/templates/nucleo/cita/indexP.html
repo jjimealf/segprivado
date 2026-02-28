@@ -1,6 +1,11 @@
 {% extends 'index.html' %}
+{% load static %}
 
 {% block title %}Historial de citas | SegPrivado{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/segprivado-datepicker.css' %}">
+{% endblock %}
 
 {% block content %}
 <section class="page-head">
@@ -12,13 +17,29 @@
 <section class="content-card">
     <form class="form-grid" method="get" action="{% url 'nucleo:filterCita' %}">
         <div class="grid-two">
-            <p>
+            <p data-sp-date-picker-host>
                 <label for="fechaIni">Desde</label>
-                <input id="fechaIni" type="date" name="fechaIni">
+                <input
+                    id="fechaIni"
+                    type="text"
+                    name="fechaIni"
+                    value="{{ request.GET.fechaIni|default:'' }}"
+                    placeholder="AAAA-MM-DD"
+                    autocomplete="off"
+                    data-sp-date-picker
+                >
             </p>
-            <p>
+            <p data-sp-date-picker-host>
                 <label for="fechaFin">Hasta</label>
-                <input id="fechaFin" type="date" name="fechaFin">
+                <input
+                    id="fechaFin"
+                    type="text"
+                    name="fechaFin"
+                    value="{{ request.GET.fechaFin|default:'' }}"
+                    placeholder="AAAA-MM-DD"
+                    autocomplete="off"
+                    data-sp-date-picker
+                >
             </p>
         </div>
         <div class="button-row">
@@ -57,4 +78,15 @@
 {% else %}
 <section class="content-card"><div class="empty-state">Sin registros.</div></section>
 {% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/segprivado-datepicker.js' %}"></script>
+<script>
+    (function () {
+        if (window.SegPrivadoDatePicker) {
+            window.SegPrivadoDatePicker.attachAll();
+        }
+    }());
+</script>
 {% endblock %}

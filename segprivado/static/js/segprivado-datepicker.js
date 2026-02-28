@@ -37,12 +37,14 @@
     }
 
     function buildPicker(input, options) {
-        const host = input.closest(".appointment-date-field") || input.parentElement;
+        const host = input.closest("[data-sp-date-picker-host]") || input.parentElement || input;
         const minDate = parseIsoDate(options.minDate || input.dataset.minDate);
+        const maxDate = parseIsoDate(options.maxDate || input.dataset.maxDate);
         const today = stripTime(new Date());
         const initialSelected = parseIsoDate(input.value);
         const state = {
             minDate: minDate,
+            maxDate: maxDate,
             selectedDate: initialSelected,
             viewDate: startOfMonth(initialSelected || minDate || today)
         };
@@ -51,6 +53,7 @@
         input.readOnly = true;
         input.setAttribute("inputmode", "none");
         input.setAttribute("aria-haspopup", "dialog");
+        input.setAttribute("aria-expanded", "false");
 
         const picker = document.createElement("div");
         picker.className = "sp-date-picker";
@@ -64,7 +67,7 @@
             '<div class="sp-date-picker__weekdays" data-role="weekdays"></div>',
             '<div class="sp-date-picker__days" data-role="days"></div>'
         ].join("");
-        host.appendChild(picker);
+        document.body.appendChild(picker);
 
         const monthLabel = picker.querySelector('[data-role="month"]');
         const weekdaysGrid = picker.querySelector('[data-role="weekdays"]');
@@ -113,20 +116,55 @@
                     dayButton.classList.add("sp-date-picker__day--disabled");
                 }
 
+                if (state.maxDate && currentDate > state.maxDate) {
+                    dayButton.disabled = true;
+                    dayButton.classList.add("sp-date-picker__day--disabled");
+                }
+
                 daysGrid.appendChild(dayButton);
             }
+        }
+
+        function positionPicker() {
+            if (picker.hidden) {
+                return;
+            }
+
+            const rect = input.getBoundingClientRect();
+            const pickerWidth = Math.min(320, window.innerWidth - 24);
+            const maxLeft = Math.max(12, window.innerWidth - pickerWidth - 12);
+            const left = Math.min(Math.max(12, rect.left), maxLeft);
+
+            picker.style.width = pickerWidth + "px";
+
+            const pickerHeight = picker.offsetHeight;
+            const spaceBelow = window.innerHeight - rect.bottom - 12;
+            const spaceAbove = rect.top - 12;
+            let top = rect.bottom + 12;
+
+            if (pickerHeight > spaceBelow && spaceAbove > spaceBelow) {
+                top = Math.max(12, rect.top - pickerHeight - 12);
+            } else {
+                top = Math.min(top, Math.max(12, window.innerHeight - pickerHeight - 12));
+            }
+
+            picker.style.left = left + "px";
+            picker.style.top = top + "px";
         }
 
         function openPicker() {
             state.selectedDate = parseIsoDate(input.value) || state.selectedDate;
             state.viewDate = startOfMonth(state.selectedDate || state.minDate || today);
+            host.classList.add("sp-date-picker-host--active");
             picker.hidden = false;
             input.setAttribute("aria-expanded", "true");
             render();
+            positionPicker();
         }
 
         function closePicker() {
             picker.hidden = true;
+            host.classList.remove("sp-date-picker-host--active");
             input.setAttribute("aria-expanded", "false");
         }
 
@@ -161,6 +199,7 @@
             const navButton = event.target.closest("[data-nav]");
             if (navButton) {
                 changeMonth(navButton.dataset.nav === "prev" ? -1 : 1);
+                positionPicker();
                 return;
             }
 
@@ -173,7 +212,7 @@
         });
 
         document.addEventListener("pointerdown", function (event) {
-            if (!host.contains(event.target)) {
+            if (!host.contains(event.target) && !picker.contains(event.target)) {
                 closePicker();
             }
         });
@@ -183,6 +222,9 @@
                 closePicker();
             }
         });
+
+        window.addEventListener("resize", positionPicker);
+        window.addEventListener("scroll", positionPicker, true);
     }
 
     window.SegPrivadoDatePicker = {
@@ -195,6 +237,13 @@
 
             input.dataset.spDatePickerAttached = "true";
             buildPicker(input, options || {});
+        },
+        attachAll: function (selector, options) {
+            const targets = document.querySelectorAll(selector || "[data-sp-date-picker]");
+
+            targets.forEach(function (input) {
+                window.SegPrivadoDatePicker.attach(input, options);
+            });
         }
     };
 }());
