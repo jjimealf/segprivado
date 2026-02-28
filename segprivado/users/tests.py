@@ -49,3 +49,19 @@ class AuthFlowTests(TestCase):
         self.assertTrue(get_user_model().objects.filter(username="doctor_demo").exists())
         self.assertTrue(get_user_model().objects.filter(username="paciente_demo").exists())
         self.assertGreaterEqual(Medicine.objects.count(), 3)
+
+    def test_logout_requires_post_and_ends_session(self):
+        user = get_user_model().objects.create_user(
+            username="paciente_logout",
+            password="ClaveSegura123",
+            is_paciente=True,
+            is_medico=False,
+        )
+        self.client.force_login(user)
+
+        get_response = self.client.get(reverse("logout"))
+        self.assertEqual(get_response.status_code, 405)
+
+        post_response = self.client.post(reverse("logout"))
+        self.assertRedirects(post_response, reverse("login"))
+        self.assertNotIn("_auth_user_id", self.client.session)

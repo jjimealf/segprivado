@@ -34,7 +34,10 @@
     <span class="user-chip__name">{{ user.username }}</span>
 </span>
 <a class="app-link app-link--subtle" href="{% url 'viewProfile' %}">Perfil</a>
-<a class="app-link app-link--danger" href="{% url 'logout' %}" onclick="return confirm('Desea cerrar sesion?')">Salir</a>
+<form class="app-link-form" method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="app-link app-link-button app-link--danger">Salir</button>
+</form>
 {% endblock %}
 
 {% block content %}{% endblock %}

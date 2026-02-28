@@ -16,6 +16,7 @@ class Login(LoginView):
 
 
 class LogoutView(DjangoLogoutView):
+    http_method_names = ["post", "options"]
     next_page = reverse_lazy("login")
 
 
