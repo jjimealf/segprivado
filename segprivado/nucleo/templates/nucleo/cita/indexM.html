@@ -17,16 +17,20 @@
                     <th>Fecha</th>
                     <th>Paciente</th>
                     <th>Notas</th>
-                    <th>Editar</th>
+                    <th class="table-col--action">Editar</th>
                 </tr>
             </thead>
             <tbody>
                 {% for c in citas %}
                 <tr>
-                    <td>{{ c.fecha }}</td>
-                    <td>{{ c.patient }}</td>
-                    <td>{{ c.observaciones|default:"Sin observaciones" }}</td>
-                    <td><a class="button button--secondary" href="{% url 'nucleo:actualizarCita' pk=c.id %}">Editar</a></td>
+                    <td><span class="table-date">{{ c.fecha }}</span></td>
+                    <td><span class="table-person">{{ c.patient }}</span></td>
+                    <td>
+                        <span class="table-note{% if not c.observaciones %} table-note--empty{% endif %}">
+                            {{ c.observaciones|default:"Sin notas." }}
+                        </span>
+                    </td>
+                    <td class="cell-actions"><a class="button button--secondary button--tight" href="{% url 'nucleo:actualizarCita' pk=c.id %}">Editar</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -34,6 +38,6 @@
     </div>
 </section>
 {% else %}
-<section class="content-card"><div class="empty-state">Sin citas.</div></section>
+<section class="content-card"><div class="empty-state">Sin registros.</div></section>
 {% endif %}
 {% endblock %}

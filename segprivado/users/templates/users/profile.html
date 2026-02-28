@@ -9,8 +9,26 @@
     </div>
 </section>
 <section class="content-card">
-    <form method="post" class="form-grid">
+    <form method="post" enctype="multipart/form-data" class="form-grid">
         {% csrf_token %}
+        <div class="profile-media">
+            {% if request.user.foto %}
+            <img class="profile-media__image" src="{{ request.user.foto.url }}" alt="{{ user.username }}">
+            {% else %}
+            <div class="profile-media__avatar" aria-hidden="true">
+                {% if user.first_name or user.last_name %}
+                {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+                {% else %}
+                {{ user.username|slice:":1"|upper }}
+                {% endif %}
+            </div>
+            {% endif %}
+            <div class="profile-media__meta">
+                <span class="profile-media__label">Foto actual</span>
+                <span class="profile-media__value">{% if request.user.foto %}Cargada{% else %}Sin foto{% endif %}</span>
+                <span class="profile-media__hint">Puedes subir una nueva imagen desde este formulario.</span>
+            </div>
+        </div>
         {% if form.non_field_errors %}
         <div class="form-errors">
             {% for error in form.non_field_errors %}
@@ -22,6 +40,9 @@
         <div class="field-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
             {{ field }}
+            {% if field.name == "foto" %}
+            <div class="field-help">JPG, PNG o WEBP. La nueva imagen reemplaza la actual al guardar.</div>
+            {% endif %}
             {% if field.help_text %}
             <div class="field-help">{{ field.help_text }}</div>
             {% endif %}

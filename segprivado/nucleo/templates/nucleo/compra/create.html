@@ -21,7 +21,7 @@
                             <th>Detalle</th>
                             <th>Precio</th>
                             <th>Stock</th>
-                            <th>Agregar</th>
+                            <th class="table-col--action">Agregar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,7 +31,7 @@
                             <td>{{ m.descripcion }}</td>
                             <td>{{ m.precio }}</td>
                             <td>{{ m.stock }}</td>
-                            <td><a class="button button--secondary" href="{% url 'nucleo:addMedicamento' pk=m.id %}">Agregar</a></td>
+                            <td class="cell-actions"><a class="button button--secondary button--tight" href="{% url 'nucleo:addMedicamento' pk=m.id %}">Agregar</a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -49,7 +49,7 @@
                             <th>Precio</th>
                             <th>Cantidad</th>
                             <th>Total</th>
-                            <th>Ajustar</th>
+                            <th class="table-col--action">Ajustar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,17 +59,17 @@
                             <td>{{ c.precio }}</td>
                             <td>{{ c.cantidad }}</td>
                             <td>{{ c.acumulado }}</td>
-                            <td>
+                            <td class="cell-actions">
                                 <div class="button-row">
-                                    <a class="button button--secondary" href="{% url 'nucleo:addMedicamento' pk=c.id %}">+</a>
-                                    <a class="button button--secondary" href="{% url 'nucleo:restarMedicamento' pk=c.id %}">-</a>
-                                    <a class="button button--danger" href="{% url 'nucleo:removeMedicamento' pk=c.id %}">Quitar</a>
+                                    <a class="button button--secondary button--tight button--icon" href="{% url 'nucleo:addMedicamento' pk=c.id %}">+</a>
+                                    <a class="button button--secondary button--tight button--icon" href="{% url 'nucleo:restarMedicamento' pk=c.id %}">-</a>
+                                    <a class="button button--danger button--tight" href="{% url 'nucleo:removeMedicamento' pk=c.id %}">Quitar</a>
                                 </div>
                             </td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="5">Carrito vacio.</td>
+                            <td colspan="5">Sin productos.</td>
                         </tr>
                         {% endfor %}
                     </tbody>

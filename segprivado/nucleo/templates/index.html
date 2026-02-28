@@ -15,16 +15,25 @@
 <a class="app-link" href="{% url 'nucleo:historialMCita' %}">Historial</a>
 {% endif %}
 <a class="app-link" href="{% url 'nucleo:especialidad' %}">Medicos</a>
+{% endblock %}
+
+{% block nav_actions %}
+<span class="user-role">{% if request.user.is_staff %}Admin{% elif request.user.is_medico %}Medico{% else %}Paciente{% endif %}</span>
 <span class="user-chip">
-    <img src="{% static 'users/ADMIN.jpg' %}" alt="usuario">
-        <span class="user-chip__meta">
-            <span class="user-chip__eyebrow">
-            {% if request.user.is_staff %}Admin{% elif request.user.is_medico %}Medico{% else %}Paciente{% endif %}
-            </span>
-            <span class="user-chip__name">{{ user.username }}</span>
-        </span>
+    {% if request.user.foto %}
+    <img class="user-chip__media" src="{{ request.user.foto.url }}" alt="{{ user.username }}">
+    {% else %}
+    <span class="user-chip__avatar" aria-hidden="true">
+        {% if user.first_name or user.last_name %}
+        {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+        {% else %}
+        {{ user.username|slice:":1"|upper }}
+        {% endif %}
+    </span>
+    {% endif %}
+    <span class="user-chip__name">{{ user.username }}</span>
 </span>
-<a class="app-link" href="{% url 'viewProfile' %}">Perfil</a>
+<a class="app-link app-link--subtle" href="{% url 'viewProfile' %}">Perfil</a>
 <a class="app-link app-link--danger" href="{% url 'logout' %}" onclick="return confirm('Desea cerrar sesion?')">Salir</a>
 {% endblock %}
 

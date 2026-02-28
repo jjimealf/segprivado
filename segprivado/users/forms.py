@@ -60,7 +60,7 @@ class SignupForm(UserCreationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "email", "direccion"]
+        fields = ["username", "first_name", "last_name", "email", "direccion", "foto"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -70,9 +70,12 @@ class UserProfileForm(forms.ModelForm):
             "last_name": ("Apellidos", "Apellidos"),
             "email": ("Correo", "Correo"),
             "direccion": ("Direccion", "Direccion"),
+            "foto": ("Foto", None),
         }
         for name, (label, placeholder) in field_config.items():
             field = self.fields[name]
             field.label = label
-            field.widget.attrs.update({"placeholder": placeholder})
+            if placeholder:
+                field.widget.attrs.update({"placeholder": placeholder})
         self.fields["email"].widget.attrs["autocomplete"] = "email"
+        self.fields["foto"].widget.attrs["accept"] = "image/*"

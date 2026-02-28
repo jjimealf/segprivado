@@ -23,7 +23,7 @@
                     <th>Receta</th>
                     <th>Precio</th>
                     <th>Stock</th>
-                    <th>Editar</th>
+                    <th class="table-col--action">Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,10 +34,10 @@
                     <td>{{ m.receta }}</td>
                     <td>{{ m.precio }}</td>
                     <td>{{ m.stock }}</td>
-                    <td>
+                    <td class="cell-actions">
                         <div class="button-row">
-                            <a class="button button--secondary" href="{% url 'nucleo:actualizarMedicamento' pk=m.id %}">Editar</a>
-                            <a class="button button--danger" href="{% url 'nucleo:eliminarMedicamento' pk=m.id %}" onclick="return confirm('Desea eliminar este medicamento?')">Eliminar</a>
+                            <a class="button button--secondary button--tight" href="{% url 'nucleo:actualizarMedicamento' pk=m.id %}">Editar</a>
+                            <a class="button button--danger button--tight" href="{% url 'nucleo:eliminarMedicamento' pk=m.id %}" onclick="return confirm('Desea eliminar este medicamento?')">Eliminar</a>
                         </div>
                     </td>
                 </tr>

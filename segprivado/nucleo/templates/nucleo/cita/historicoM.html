@@ -40,9 +40,13 @@
             <tbody>
                 {% for cita in citas %}
                 <tr>
-                    <td>{{ cita.fecha }}</td>
-                    <td>{{ cita.observaciones|default:"Sin observaciones" }}</td>
-                    <td>{{ cita.patient }}</td>
+                    <td><span class="table-date">{{ cita.fecha }}</span></td>
+                    <td>
+                        <span class="table-note{% if not cita.observaciones %} table-note--empty{% endif %}">
+                            {{ cita.observaciones|default:"Sin notas." }}
+                        </span>
+                    </td>
+                    <td><span class="table-person">{{ cita.patient }}</span></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -50,6 +54,6 @@
     </div>
 </section>
 {% else %}
-<section class="content-card"><div class="empty-state">Sin citas.</div></section>
+<section class="content-card"><div class="empty-state">Sin registros.</div></section>
 {% endif %}
 {% endblock %}
