@@ -17,8 +17,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
 from users.views import Login, LogoutView
+from nucleo.views import home
 
 
 urlpatterns = [
@@ -26,7 +26,7 @@ urlpatterns = [
     path('', Login.as_view(), name='login'),
     path('',include('nucleo.urls')),
     path('logout', LogoutView.as_view(), name='logout'),
-    path('home', TemplateView.as_view(template_name='nucleo/home.html'), name='home'),
+    path('home', home, name='home'),
     path('accounts/', include('users.urls')),
     path('acounts/', include('users.urls')),
 ]

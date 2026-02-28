@@ -4,7 +4,4 @@ from appointments.serializers import (
     PatientSerializer,
 )
 
-
-pacienteSerializer = PatientSerializer
-medicoSerializer = DoctorSerializer
-citaSerializer = AppointmentSerializer
+__all__ = ["AppointmentSerializer", "DoctorSerializer", "PatientSerializer"]

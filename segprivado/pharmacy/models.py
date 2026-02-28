@@ -12,23 +12,11 @@ class Medicine(models.Model):
 
 class Purchase(models.Model):
     fecha = models.DateField(null=True)
-    idPaciente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    patient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     precio = models.FloatField(null=True)
-
-    @property
-    def patient(self):
-        return self.idPaciente
 
 
 class PurchaseItem(models.Model):
-    idCompra = models.ForeignKey(Purchase, on_delete=models.CASCADE, null=True)
-    idMedicamento = models.ForeignKey(Medicine, on_delete=models.CASCADE, null=True)
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, null=True)
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE, null=True)
     cant = models.IntegerField(null=True)
-
-    @property
-    def purchase(self):
-        return self.idCompra
-
-    @property
-    def medicine(self):
-        return self.idMedicamento

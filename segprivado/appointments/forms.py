@@ -9,12 +9,12 @@ from users.models import User
 class AppointmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["idMedico"].queryset = User.objects.filter(is_medico=True)
+        self.fields["doctor"].queryset = User.objects.filter(is_medico=True)
 
     class Meta:
         model = Appointment
-        fields = ["fecha", "idMedico"]
-        labels = {"fecha": "Fecha", "idMedico": "Medico"}
+        fields = ["fecha", "doctor"]
+        labels = {"fecha": "Fecha", "doctor": "Medico"}
         widgets = {
             "fecha": forms.DateInput(attrs={"type": "date"}),
         }
@@ -28,8 +28,8 @@ class AppointmentForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         fecha = cleaned_data.get("fecha")
-        medico = cleaned_data.get("idMedico")
-        if fecha and medico and Appointment.objects.filter(fecha=fecha, idMedico=medico).count() > 3:
+        doctor = cleaned_data.get("doctor")
+        if fecha and doctor and Appointment.objects.filter(fecha=fecha, doctor=doctor).count() > 3:
             raise forms.ValidationError("Ese medico no esta disponible en esa fecha")
         return cleaned_data
 

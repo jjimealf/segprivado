@@ -1,15 +1,12 @@
 {% extends 'index.html' %}
-<link rel="stylesheet" src="static.css">
-{% block titulo %} Medicamentos {% endblock %}
 
-{%block content %}
+{% block title %}Medicamentos | SegPrivado{% endblock %}
+
+{% block content %}
 <h1>Medicamentos</h1>
- 
 <br>
-</br>
-<caption><a class="btn btn-secondary" href="{% url 'nucleo:crearMedicamento' %}">Añadir Medicamento</a></caption>
-<br>
-</br>
+<caption><a class="btn btn-secondary" href="{% url 'nucleo:crearMedicamento' %}">Anadir Medicamento</a></caption>
+<br><br>
 {% if medicamentos %}
 <table class="table">
   <thead class="table-primary">
@@ -31,17 +28,14 @@
       <td>{{ m.precio }}</td>
       <td>{{ m.stock }}</td>
       <td>
-        <a class="btn btn-secondary" href="{%url 'nucleo:actualizarMedicamento' pk=m.id %}">Editar</a>
-        <a class="btn btn-danger" href="{%url 'nucleo:eliminarMedicamento' pk=m.id %}" onclick="return confirm('¿Está seguro que desea eliminar este medicamento?')">Eliminar</a>
+        <a class="btn btn-secondary" href="{% url 'nucleo:actualizarMedicamento' pk=m.id %}">Editar</a>
+        <a class="btn btn-danger" href="{% url 'nucleo:eliminarMedicamento' pk=m.id %}" onclick="return confirm('Desea eliminar este medicamento?')">Eliminar</a>
       </td>
     </tr>
     {% endfor %}
-
-    {% else %}
-    <h1>No hay medicamentos registrados</h1>
-
-    {% endif %}
   </tbody>
 </table>
-
-{% endblock content%}
+{% else %}
+<h1>No hay medicamentos registrados</h1>
+{% endif %}
+{% endblock %}

@@ -17,9 +17,9 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    idPaciente = PatientSerializer(read_only=True)
-    idMedico = DoctorSerializer(read_only=True)
+    patient = PatientSerializer(read_only=True)
+    doctor = DoctorSerializer(read_only=True)
 
     class Meta:
         model = Appointment
-        fields = ["id", "idPaciente", "idMedico", "fecha", "observaciones"]
+        fields = ["id", "patient", "doctor", "fecha", "observaciones"]

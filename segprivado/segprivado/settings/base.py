@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "users",
     "appointments",
     "pharmacy",
-    "registration",
     "nucleo",
     "django_cleanup",
 ]

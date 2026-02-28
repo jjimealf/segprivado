@@ -28,11 +28,11 @@ class AppointmentFlowTests(TestCase):
             reverse("nucleo:pedirCita"),
             {
                 "fecha": (date.today() + timedelta(days=1)).isoformat(),
-                "idMedico": doctor.pk,
+                "doctor": doctor.pk,
             },
         )
 
         self.assertRedirects(response, reverse("nucleo:home"))
         appointment = Appointment.objects.get()
-        self.assertEqual(appointment.idPaciente, patient)
-        self.assertEqual(appointment.idMedico, doctor)
+        self.assertEqual(appointment.patient, patient)
+        self.assertEqual(appointment.doctor, doctor)
